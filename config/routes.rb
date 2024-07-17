@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   #the 4 main controllers
   resource :session, only: [:new, :create, :destroy]
   resource :registration
-  resource :password_reset
+  resource :password_reset, only: [:new, :create, :edit, :update]
   resource :password, only: [:new, :create, :edit, :destroy]
+
+  #custom route for confirming reset (optional)
+  get '/password_resets/confirm_reset/:token', to: 'password_resets#confirm_reset', as: 'confirm_reset'
 
   root 'main#index'
 end

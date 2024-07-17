@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
   private
 
+  def authenticate_user!
+    redirect_to root_path, alert: "You must be logged in to do that" unless user_signed_in? 
+  end
+
   def current_user
     Rails.logger.debug("current_user called")
     @current_user ||= User.find_by(id: session[:user_id])
@@ -24,7 +28,7 @@ class ApplicationController < ActionController::Base
     @current_user = user
   end
 
-  def logout
+  def logout(user)
     Rails.logger.debug("logout called")
     reset_session
     @current_user = nil
